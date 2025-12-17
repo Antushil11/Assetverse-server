@@ -375,7 +375,7 @@ async function run() {
       res.send(result);
     });
 
-    //employee related 
+    //employees related 
     app.get("/employee", async (req, res) => {
       const query = {};
 
