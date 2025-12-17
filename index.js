@@ -77,7 +77,7 @@ async function run() {
       next();
     };
 
-    //users related api
+    //users relateds api
     app.get("/users", verifyFBToken, async (req, res) => {
       const { role, workStatus } = req.query; // ✅ Correct
       const searchText = req.query.searchText;
