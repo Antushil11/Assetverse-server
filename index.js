@@ -79,7 +79,7 @@ async function run() {
 
     //users relateds api
     app.get("/users", verifyFBToken, async (req, res) => {
-      const { role, workStatus } = req.query; // ✅ Correct
+      const { role, workStatus } = req.query; 
       const searchText = req.query.searchText;
       const query = {};
       if (searchText) {
@@ -147,7 +147,7 @@ async function run() {
     // Get All Parcels
     app.get("/parcels", async (req, res) => {
       const query = {};
-      const { email, status } = req.query; // ✅ FIX
+      const { email, status } = req.query; 
 
       if (email) query.hrEmail = email;
       if (status) query.status = status;
@@ -163,7 +163,7 @@ async function run() {
     // Create parcel
     app.post("/parcels", async (req, res) => {
       const parcel = req.body;
-      parcel.status = "completed"; // ✅ ADD THIS
+      parcel.status = "completed"; 
       parcel.createdAt = new Date();
 
       const result = await parcelsCollection.insertOne(parcel);
