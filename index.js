@@ -416,7 +416,7 @@ async function run() {
       res.send(result);
     });
 
-    // Delete parcel
+    // Delete parcels
     app.delete("/employee/:id", async (req, res) => {
       const id = req.params.id;
       const result = await employeeCollection.deleteOne({
