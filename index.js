@@ -375,7 +375,7 @@ async function run() {
       res.send(result);
     });
 
-    //employee related apis
+    //employee related 
     app.get("/employee", async (req, res) => {
       const query = {};
 
