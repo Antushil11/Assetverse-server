@@ -9,8 +9,9 @@ const port = process.env.PORT || 3000;
 
 var admin = require("firebase-admin");
 
-
-const decoded = Buffer.from(process.env.FB_SERVICE_KEY, 'base64').toString('utf8')
+const decoded = Buffer.from(process.env.FB_SERVICE_KEY, "base64").toString(
+  "utf8"
+);
 const serviceAccount = JSON.parse(decoded);
 
 admin.initializeApp({
@@ -177,7 +178,7 @@ async function run() {
         query.employeeEmail = employeeEmail;
       }
       if (status) {
-        query.status = {$in: ['assigned', 'empplyee_arriving']};
+        query.status = { $in: ["assigned", "empplyee_arriving"] };
       }
 
       const cursor = parcelsCollection.find(query);
@@ -215,7 +216,6 @@ async function run() {
       res.send(userResult);
     });
 
-
     // Route to get assigned assets for printing/PDF
     app.get("/parcels/employee/print", verifyFBToken, async (req, res) => {
       const email = req.query.email;
@@ -234,10 +234,6 @@ async function run() {
       // Send JSON to frontend, frontend can convert to PDF
       res.send(assets);
     });
-
-
-
-    
 
     app.patch("/parcels/:id/status", async (req, res) => {
       const { status } = req.body;
@@ -306,8 +302,6 @@ async function run() {
     // new code
 
     // PATCH route for payment success
-    
-
 
     app.patch("/payment-success", async (req, res) => {
       try {
@@ -434,6 +428,30 @@ async function run() {
       const result = await employeeCollection.insertOne(employee);
       res.send(result);
     });
+
+    // Server-side pagination for employees
+    app.get("/employees", verifyFBToken, verifyAdmin, async (req, res) => {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+
+      const skip = (page - 1) * limit;
+
+      const total = await employeeCollection.countDocuments();
+      const employees = await employeeCollection
+        .find()
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+
+      res.send({
+        total,
+        page,
+        limit,
+        employees,
+      });
+    });
+
+    
 
     // assets
 
